@@ -4,7 +4,7 @@ const initialState = {
     restaurants: [],
     loading: false,
     error: null,
-}
+};
 
 export const restaurants = (state = initialState, action: any) => {
     switch (action.type) {
@@ -14,21 +14,21 @@ export const restaurants = (state = initialState, action: any) => {
                 restaurants: action.payload,
                 loading: false,
                 error: null,
-            }
+            };
         case CREATE_RESTAURANT_START:
             return {
                 ...state,
-                loading: true,
-            }
+                loading: true
+            };
 
         case CREATE_RESTAURANT_FAILURE:
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
-            }
+            };
 
         default:
             return state;
     }
-}
+};

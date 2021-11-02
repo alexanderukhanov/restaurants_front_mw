@@ -1,9 +1,9 @@
-import axios from 'axios'
+import BaseService from './BaseService';
 
-class RestaurantsService {
+class RestaurantsService extends BaseService{
     public createRestaurantRequest = async (restaurantData: any) => (
-        axios.post('http://localhost:4001/api/restaurants', restaurantData)
+        this.httpClient.post('api/restaurants', restaurantData)
     )
-};
+}
 
 export default new RestaurantsService();

@@ -1,19 +1,21 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import store from './redux/store';
+import { Route, Router } from 'react-router-dom';
+import store, { history } from './redux/store';
 
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
+import Login from './components/Login/Login';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path='/' component={Header}/>
-                </Switch>
-            </BrowserRouter>
+            <Router history={history}>
+                <Route path='/' component={Header}/>
+                <Route exact path='/login' component={Login}/>
+                <Route exact path='/dashboard' component={Dashboard}/>
+            </Router>
         </Provider>
     );
 }
