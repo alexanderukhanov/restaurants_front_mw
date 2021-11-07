@@ -1,27 +1,15 @@
-import { CREATE_RESTAURANT_FAILURE, CREATE_RESTAURANT_START, CREATE_RESTAURANT_SUCCESS } from './types';
+import { addRestaurant, CREATE_RESTAURANT_FAILURE } from './types';
 import { Dispatch } from 'redux';
 import RestaurantsService from '../../../services/RestaurantsService';
 
-export const createRestaurantRequest = (restaurantData: any) => (
+export const createRestaurantRequest = (restaurantData: addRestaurant) => (
     (dispatch: Dispatch) => {
-        dispatch(createRestaurantStart());
-
         RestaurantsService.createRestaurantRequest(restaurantData)
-            .then((restaurantResponseData: any) => createRestaurantSuccess(restaurantResponseData))
-            .catch(error => dispatch(createRestaurantFailure(error)));
+            .catch(error => dispatch(createRestaurantFailure(error.message)));
     }
 );
 
-export const createRestaurantStart = () => ({
-    type: CREATE_RESTAURANT_START,
-});
-
-export const createRestaurantSuccess = (restaurantResponseData: any) => ({
-    type: CREATE_RESTAURANT_SUCCESS,
-    payload: restaurantResponseData,
-});
-
-export const createRestaurantFailure = (error: any) => ({
+export const createRestaurantFailure = (error: string) => ({
     type: CREATE_RESTAURANT_FAILURE,
     payload: error,
 });

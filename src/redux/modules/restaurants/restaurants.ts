@@ -1,31 +1,16 @@
-import { CREATE_RESTAURANT_FAILURE, CREATE_RESTAURANT_START, CREATE_RESTAURANT_SUCCESS } from './types';
+import { CREATE_RESTAURANT_FAILURE } from './types';
 
 const initialState = {
     restaurants: [],
-    loading: false,
-    error: null,
+    errors: [],
 };
 
 export const restaurants = (state = initialState, action: any) => {
     switch (action.type) {
-        case CREATE_RESTAURANT_SUCCESS:
-            return {
-                ...state,
-                restaurants: action.payload,
-                loading: false,
-                error: null,
-            };
-        case CREATE_RESTAURANT_START:
-            return {
-                ...state,
-                loading: true
-            };
-
         case CREATE_RESTAURANT_FAILURE:
             return {
                 ...state,
-                loading: false,
-                error: action.payload,
+                errors: state.errors.concat(action.payload),
             };
 
         default:
