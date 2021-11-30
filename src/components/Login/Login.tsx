@@ -3,7 +3,7 @@ import { Button, Grid, TextField } from '@material-ui/core';
 
 import useStyles from '../Login/styles';
 import { UserDataToLogin } from '../../redux/modules/users/types';
-import { validateEmail, validatePass } from '../../helpers/filedValidations';
+import { validateEmail, validatePass } from '../../helpers/fieldValidations';
 import { loginAndGetProfileRequest } from '../../redux/modules/users/actions';
 import { useDispatch } from 'react-redux';
 

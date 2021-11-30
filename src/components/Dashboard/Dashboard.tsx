@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     Button,
@@ -19,7 +19,10 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { addRestaurant } from '../../redux/modules/restaurants/types';
 import useStyles from './styles';
-import { createRestaurantRequest } from '../../redux/modules/restaurants/actions';
+import { createRestaurantRequest, createRestaurantSuccess } from '../../redux/modules/restaurants/actions';
+import ConfirmationModal from '../../modals/ConfirmationModal';
+import { selectIsNewRestaurantCreated } from '../../redux/modules/restaurants/selectors';
+import SuccessModal from '../../modals/SuccessModal';
 
 const initialDishState = {
     cost: '',
@@ -38,12 +41,20 @@ const initialRestaurantState = {
     dishes: [{...initialDishState}],
 };
 
+export type ModalData = {
+    isOpened: boolean,
+    index: number,
+}
+
 const Dashboard = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const isNewRestaurantCreated = useSelector(selectIsNewRestaurantCreated);
+
     const [restaurantData, setRestaurantData] = useState<addRestaurant>(initialRestaurantState);
     const [open, setOpen] = useState<boolean[]>([true]);
     const [isUploadClicked, setIsUploadClicked] = useState(false);
+    const [modalData, setModalData] = useState<ModalData>({isOpened: false, index: 0});
     const formRef = useRef<null | HTMLFormElement>(null);
 
     const fileHandler = (e: React.ChangeEvent<HTMLInputElement>, index?: number) => {
@@ -141,7 +152,9 @@ const Dashboard = () => {
         };
     }, [restaurantData]);
 
-    const handleDeleteDish = (index: number) => {
+    const handleDeleteDish = (index: number) => setModalData({isOpened: true, index});
+
+    const deleteDish = (index: number) => {
         setRestaurantData(prevState => {
             const dishes = [...prevState.dishes];
             dishes.splice(index, 1);
@@ -187,17 +200,25 @@ const Dashboard = () => {
         }
     };
 
+    const successModalCloseHandler = () => {
+        const restaurantFile = document.querySelector<HTMLInputElement>("#contained-button-file");
+        if (restaurantFile) {
+            restaurantFile.value = '';
+        }
+
+        restaurantData.dishes.forEach((dish, index) => {
+            const dishFile = document.querySelector<HTMLInputElement>(`#contained-button-file${index}`);
+            if (dishFile) {
+                dishFile.value = '';
+            }
+        });
+        setRestaurantData(initialRestaurantState);
+        dispatch(createRestaurantSuccess(false));
+    };
+
     useEffect(() => {
         formRef.current?.scrollIntoView({behavior: "smooth", block: "end"});
     }, [restaurantData.dishes]);
-
-    useEffect(() => {
-        console.log({restaurantData});
-        const cents = 2300;
-        const dollars = cents / 100;
-        const dollarsToShow = dollars.toLocaleString("en-US", {style: "currency", currency: "USD"});
-        console.log({finalDollars: dollarsToShow});
-    }, [restaurantData]);
 
     return (
         <FormControl component='form' innerRef={formRef} style={{width: '100%'}}>
@@ -212,12 +233,27 @@ const Dashboard = () => {
                 <Typography variant="h6">Restaurant</Typography>
 
                 <Grid className={classes.fieldsWrapper}>
-                    <TextField label="Name" variant="standard" name='name' required onChange={restaurantDataHandler}/>
-                    <TextField label="Type" variant="standard" name='type' required onChange={restaurantDataHandler}/>
+                    <TextField
+                        label="Name"
+                        variant="standard"
+                        value={restaurantData.restaurant.name}
+                        name='name'
+                        required
+                        onChange={restaurantDataHandler}
+                    />
+                    <TextField
+                        label="Type"
+                        variant="standard"
+                        value={restaurantData.restaurant.type}
+                        name='type'
+                        required
+                        onChange={restaurantDataHandler}
+                    />
                     <TextField
                         label="Address"
                         variant="standard"
                         onChange={restaurantDataHandler}
+                        value={restaurantData.restaurant.address}
                         name='address'
                         required
                     />
@@ -236,7 +272,7 @@ const Dashboard = () => {
                     </Button>
                 </label>
                 {isImageToSend.restaurant && isUploadClicked &&
-                <Alert severity="warning" style={{width: '52%'}}>Please select a file</Alert>}
+                    <Alert severity="warning" style={{width: '52%'}}>Please select a file</Alert>}
 
                 <CardMedia
                     component="img"
@@ -263,12 +299,14 @@ const Dashboard = () => {
                                 <TextField
                                     label="Name"
                                     variant="standard"
+                                    value={dish.name}
                                     name='name'
                                     required
                                     onChange={(e) => dishDataHandler(e, index)}/>
                                 <TextField
                                     label="Description"
                                     variant="standard"
+                                    value={dish.description}
                                     name='description'
                                     required
                                     onChange={(e) => dishDataHandler(e, index)}
@@ -278,6 +316,7 @@ const Dashboard = () => {
                                     variant="standard"
                                     type='number'
                                     onInput={handleInputCost}
+                                    value={dish.cost}
                                     name='cost'
                                     required
                                     inputProps={{step: 'any'}}
@@ -307,7 +346,7 @@ const Dashboard = () => {
                                 </Button>
                             </label>
                             {isImageToSend.dishes[index] && isUploadClicked &&
-                            <Alert severity="warning">Please select a file</Alert>}
+                                <Alert severity="warning">Please select a file</Alert>}
 
                             <CardMedia
                                 component="img"
@@ -334,6 +373,15 @@ const Dashboard = () => {
                 >
                     Upload
                 </Button>
+                <ConfirmationModal
+                    modalData={modalData}
+                    setModalData={setModalData}
+                    deleteDish={deleteDish}
+                />
+                <SuccessModal
+                    isNewRestaurantCreated={isNewRestaurantCreated}
+                    successModalCloseHandler={successModalCloseHandler}
+                />
             </Grid>
         </FormControl>
     );
