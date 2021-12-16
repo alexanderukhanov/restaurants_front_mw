@@ -1,6 +1,6 @@
 export const SET_USER_PROFILE = 'SET_USER_PROFILE';
-export const GET_USER_PROFILE_FAIL = 'GET_USER_PROFILE_FAIL';
-export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const USERS_ERRORS = 'USERS_ERRORS';
+export const CLEAR_USERS_ERRORS = 'CLEAR_USERS_ERRORS';
 
 export type UsersState = {
     profile: UserProfile,

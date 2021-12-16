@@ -1,7 +1,8 @@
 import {
-    RESTAURANTS_ERROR,
+    RESTAURANTS_ERRORS,
     CREATE_RESTAURANT_SUCCESS,
     GET_RESTAURANTS_DATA_SUCCESS,
+    CLEAR_RESTAURANTS_ERRORS,
     RestaurantState,
 } from './types';
 import { RestaurantStateActionTypes } from './actions';
@@ -29,10 +30,18 @@ export const restaurants = (
                 restaurants: action.payload,
             };
 
-        case RESTAURANTS_ERROR:
+        case RESTAURANTS_ERRORS:
             return {
                 ...state,
-                errors: state.errors.concat(action.payload),
+                errors: state.errors
+                    .filter((error) => error !== action.payload)
+                    .concat(action.payload),
+            };
+
+        case CLEAR_RESTAURANTS_ERRORS:
+            return {
+                ...state,
+                errors: [],
             };
 
         default:

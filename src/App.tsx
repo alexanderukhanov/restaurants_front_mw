@@ -9,12 +9,14 @@ import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import MainContent from './components/MainContent/MainContent';
 import Dishes from './components/Dishes/Dishes';
+import Notifier from './components/Notifier/Notifier';
 
 function App() {
     return (
         <Provider store={store}>
             <Router history={history}>
                 <Route path='/' component={Header}/>
+                <Route path='/' component={Notifier}/>
                 <Route exact path='/' component={MainContent}/>
                 <Route exact path='/restaurant/:id' render={({match}) => (
                     <Dishes restaurantId={Number(match.params.id)}/>

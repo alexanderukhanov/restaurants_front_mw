@@ -1,10 +1,10 @@
 import UsersService from '../../../services/UsersService';
 import {
-    GET_USER_PROFILE_FAIL,
-    LOGIN_FAIL,
     SET_USER_PROFILE,
+    USERS_ERRORS,
+    CLEAR_USERS_ERRORS,
     UserDataToLogin,
-    UserProfile
+    UserProfile,
 } from './types';
 import { Dispatch } from 'redux';
 import { push } from 'connected-react-router';
@@ -12,7 +12,8 @@ import { push } from 'connected-react-router';
 export const loginAndGetProfileRequest = (data: UserDataToLogin) => (
     async (dispatch: Dispatch) => {
         const result = await UsersService.login(data).catch((e) => {
-            dispatch(loginFailure(e.message));
+            const {error} = e.response.data;
+            dispatch(usersErrors(error ?? e.response.data));
         });
 
         if (!result) {
@@ -26,7 +27,7 @@ export const loginAndGetProfileRequest = (data: UserDataToLogin) => (
 export const getUserProfileRequest = () => (
     async (dispatch: Dispatch) => {
         const userProfile = await UsersService.getUserProfile().catch((e) => {
-            dispatch(getProfileFailure(e.message));
+            dispatch(usersErrors(e.message));
         });
 
         userProfile && dispatch(getProfileSuccess(userProfile));
@@ -39,14 +40,14 @@ export const getProfileSuccess = (payload: UserProfile) => ({
     payload,
 }) as const;
 
-export const loginFailure = (payload: string) => ({
-    type: LOGIN_FAIL,
+
+export const usersErrors = (payload: string) => ({
+    type: USERS_ERRORS,
     payload,
 }) as const;
 
-export const getProfileFailure = (payload: string) => ({
-    type: GET_USER_PROFILE_FAIL,
-    payload,
+export const clearUsersErrors = () => ({
+    type: CLEAR_USERS_ERRORS,
 }) as const;
 
 export const handleLogout = () => (
@@ -54,6 +55,6 @@ export const handleLogout = () => (
 );
 
 export type UserStateActionsTypes = ReturnType<typeof getProfileSuccess>
-    | ReturnType<typeof getProfileFailure>
-    | ReturnType<typeof loginFailure>;
+    | ReturnType<typeof usersErrors>
+    | ReturnType<typeof clearUsersErrors>;
 

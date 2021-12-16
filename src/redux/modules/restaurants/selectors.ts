@@ -12,3 +12,8 @@ export const selectRestaurantsData = createSelector(
     selectAppState,
     state => state.restaurants.restaurants
 );
+
+export const selectRestaurantsErrors = createSelector(
+    selectAppState,
+    state => state.restaurants.errors
+);

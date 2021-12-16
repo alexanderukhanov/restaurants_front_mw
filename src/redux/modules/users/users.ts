@@ -1,8 +1,8 @@
 import {
-    GET_USER_PROFILE_FAIL,
-    LOGIN_FAIL,
+    USERS_ERRORS,
     SET_USER_PROFILE,
-    UsersState
+    CLEAR_USERS_ERRORS,
+    UsersState,
 } from './types';
 import { UserStateActionsTypes } from './actions';
 
@@ -27,15 +27,19 @@ export const users = (
             };
         }
 
-        case LOGIN_FAIL: {
+        case USERS_ERRORS: {
             return {
-                ...state, errors: state.errors.concat(action.payload)
+                ...state,
+                errors: state.errors
+                    .filter((error) => error !== action.payload)
+                    .concat(action.payload)
             };
         }
 
-        case GET_USER_PROFILE_FAIL: {
+        case CLEAR_USERS_ERRORS: {
             return {
-                ...state, errors: state.errors.concat(action.payload)
+                ...state,
+                errors: [],
             };
         }
 
