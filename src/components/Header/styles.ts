@@ -5,6 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const styles = (theme: Theme) => createStyles({
     root: {
         flexGrow: 1,
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
     },
 
     menuButton: {

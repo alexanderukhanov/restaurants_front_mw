@@ -6,20 +6,21 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 
 type Props = {
-    isNewRestaurantCreated: boolean,
+    isNewEntityCreated: boolean,
     successModalCloseHandler: () => void,
+    text: string,
 }
 
-const SuccessModal: React.FC<Props> = ({isNewRestaurantCreated, successModalCloseHandler}) => (
+const SuccessModal: React.FC<Props> = ({isNewEntityCreated, successModalCloseHandler, text}) => (
     <Dialog
-        open={isNewRestaurantCreated}
+        open={isNewEntityCreated}
         onClose={successModalCloseHandler}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
     >
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                Successfully uploaded!
+                {text}
             </DialogContentText>
         </DialogContent>
         <DialogActions style={{display: 'flex', justifyContent: 'center'}}>

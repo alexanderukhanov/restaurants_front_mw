@@ -3,6 +3,7 @@ import {
     CREATE_RESTAURANT_SUCCESS,
     GET_RESTAURANTS_DATA_SUCCESS,
     CLEAR_RESTAURANTS_ERRORS,
+    CREATE_ORDER_SUCCESS,
     RestaurantState,
 } from './types';
 import { RestaurantStateActionTypes } from './actions';
@@ -10,6 +11,7 @@ import { RestaurantStateActionTypes } from './actions';
 const initialState: RestaurantState = {
     restaurants: [],
     isNewRestaurantCreated: false,
+    isNewOrderCreated: false,
     errors: [],
 };
 
@@ -22,6 +24,11 @@ export const restaurants = (
             return {
                 ...state,
                 isNewRestaurantCreated: action.payload,
+            };
+        case CREATE_ORDER_SUCCESS:
+            return {
+                ...state,
+                isNewOrderCreated: action.payload,
             };
 
         case GET_RESTAURANTS_DATA_SUCCESS:

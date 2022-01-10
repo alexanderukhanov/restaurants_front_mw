@@ -74,7 +74,6 @@ const MainContent = () => {
                            type,
                            previewLink,
                            likes,
-                           isLiked,
                        }) => (
                 <Card key={`${name}${id}`} sx={{
                     marginBottom: '15px', borderRadius: '20px', boxShadow: '0px 0px 6px 2px rgba(34, 60, 80, 0.25)'

@@ -1,20 +1,26 @@
 import {
-    addRestaurant,
     RESTAURANTS_ERRORS,
     CREATE_RESTAURANT_SUCCESS,
     GET_RESTAURANTS_DATA_SUCCESS,
     CLEAR_RESTAURANTS_ERRORS,
+    CREATE_ORDER_SUCCESS,
     FetchedRestaurantData,
-    updateRestaurant,
+    UpdateRestaurant,
+    OrderData,
+    AddRestaurant,
 } from './types';
 import { Dispatch } from 'redux';
 import RestaurantsService from '../../../services/RestaurantsService';
 
-export const createRestaurantRequest = (restaurantData: addRestaurant) => (
+export const createRestaurantRequest = (restaurantData: AddRestaurant) => (
     (dispatch: Dispatch) => {
         RestaurantsService.createRestaurantRequest(restaurantData)
             .then(response => response.status === 201 && dispatch(createRestaurantSuccess(true)))
-            .catch(error => dispatch(restaurantsErrors(error.message)));
+            .catch(e => {
+                const {data} = e.response;
+                const {error} = data;
+                dispatch(restaurantsErrors(error || data));
+            });
     }
 );
 
@@ -36,13 +42,29 @@ export const getRestaurantsDataSuccess = (payload: FetchedRestaurantData[]) => (
     payload,
 }) as const;
 
-export const updateRestaurantData = (restaurantData: updateRestaurant) => (
+export const updateRestaurantData = (restaurantData: UpdateRestaurant) => (
     (dispatch: Dispatch) => (
         RestaurantsService.updateRestaurantLike(restaurantData)
             .then(response => response.status === 200)
             .catch(error => dispatch(restaurantsErrors(error.message)))
     )
 );
+
+export const createOrderRequest = (orderData: OrderData) => (
+    (dispatch: Dispatch) => {
+        RestaurantsService.createOrder(orderData)
+            .then(response => response.status === 201 && dispatch(createOrderSuccess(true)))
+            .catch(e => {
+                const {data, statusText} = e.response;
+                dispatch(restaurantsErrors(data || statusText));
+            });
+    }
+);
+
+export const createOrderSuccess = (payload: boolean) => ({
+    type: CREATE_ORDER_SUCCESS,
+    payload,
+}) as const;
 
 export const restaurantsErrors = (error: string) => ({
     type: RESTAURANTS_ERRORS,
@@ -56,4 +78,5 @@ export const clearRestaurantsErrors = () => ({
 export type RestaurantStateActionTypes = ReturnType<typeof createRestaurantSuccess>
     | ReturnType<typeof getRestaurantsDataSuccess>
     | ReturnType<typeof restaurantsErrors>
-    | ReturnType<typeof clearRestaurantsErrors>;
+    | ReturnType<typeof clearRestaurantsErrors>
+    | ReturnType<typeof createOrderSuccess>;

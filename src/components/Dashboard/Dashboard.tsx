@@ -17,7 +17,7 @@ import SendIcon from '@material-ui/icons/Send';
 import Alert from '@mui/material/Alert';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { addRestaurant } from '../../redux/modules/restaurants/types';
+import { AddRestaurant } from '../../redux/modules/restaurants/types';
 import useStyles from './styles';
 import { createRestaurantRequest, createRestaurantSuccess } from '../../redux/modules/restaurants/actions';
 import ConfirmationModal from '../../modals/ConfirmationModal';
@@ -51,7 +51,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const isNewRestaurantCreated = useSelector(selectIsNewRestaurantCreated);
 
-    const [restaurantData, setRestaurantData] = useState<addRestaurant>(initialRestaurantState);
+    const [restaurantData, setRestaurantData] = useState<AddRestaurant>(initialRestaurantState);
     const [open, setOpen] = useState<boolean[]>([true]);
     const [isUploadClicked, setIsUploadClicked] = useState(false);
     const [modalData, setModalData] = useState<ModalData>({isOpened: false, index: 0});
@@ -379,8 +379,9 @@ const Dashboard = () => {
                     deleteDish={deleteDish}
                 />
                 <SuccessModal
-                    isNewRestaurantCreated={isNewRestaurantCreated}
+                    isNewEntityCreated={isNewRestaurantCreated}
                     successModalCloseHandler={successModalCloseHandler}
+                    text="Successfully uploaded!"
                 />
             </Grid>
         </FormControl>

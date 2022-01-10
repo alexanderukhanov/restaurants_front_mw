@@ -8,6 +8,11 @@ export const selectIsNewRestaurantCreated = createSelector(
     state => state.restaurants.isNewRestaurantCreated
 );
 
+export const selectIsNewOrderCreated = createSelector(
+    selectAppState,
+    state => state.restaurants.isNewOrderCreated
+);
+
 export const selectRestaurantsData = createSelector(
     selectAppState,
     state => state.restaurants.restaurants
