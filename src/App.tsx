@@ -12,6 +12,7 @@ import Dishes from './components/Dishes/Dishes';
 import Notifier from './components/Notifier/Notifier';
 import Cart from './components/Cart/Cart';
 import { DishDataWithAmount } from './redux/modules/restaurants/types';
+import About from './components/About/About';
 
 export const Context = createContext<[
     Array<DishDataWithAmount>,
@@ -43,6 +44,7 @@ function App() {
                 </Context.Provider>
                 <Route exact path='/login' component={Login}/>
                 <Route exact path='/dashboard' component={Dashboard}/>
+                <Route exact path='/about' component={About}/>
             </Router>
         </Provider>
     );

@@ -16,6 +16,7 @@ const styles = (theme: Theme) => createStyles({
 
     title: {
         flexGrow: 1,
+        cursor: 'pointer'
     },
 
 });

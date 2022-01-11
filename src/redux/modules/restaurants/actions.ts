@@ -33,7 +33,7 @@ export const getRestaurantsData = () => (
     (dispatch: Dispatch) => {
         RestaurantsService.getRestaurantsData()
             .then(response => dispatch(getRestaurantsDataSuccess(response.data)))
-            .catch(error => dispatch(restaurantsErrors(error)));
+            .catch(error => dispatch(restaurantsErrors(error.message || error)));
     }
 );
 

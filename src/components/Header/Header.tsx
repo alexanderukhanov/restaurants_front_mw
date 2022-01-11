@@ -41,6 +41,11 @@ const Header = () => {
         handleClose();
     };
 
+    const aboutSiteHandler = () => {
+        history.push('/about');
+        handleClose();
+    };
+
     const isAdmin = useMemo(() => (
         userProfile.role === 'admin'
     ), [userProfile]);
@@ -64,7 +69,7 @@ const Header = () => {
                         onClose={handleClose}
                     >
                         {isAdmin && <MenuItem onClick={dashboardHandler}>Admin Dashboard</MenuItem>}
-                        <MenuItem onClick={handleClose}>About Site</MenuItem>
+                        <MenuItem onClick={aboutSiteHandler}>About Site</MenuItem>
                     </Drawer>
                     <Typography variant="h6" className={classes.title} onClick={() => history.push('/')}>
                         Restaurants
