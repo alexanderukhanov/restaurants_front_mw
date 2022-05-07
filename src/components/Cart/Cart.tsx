@@ -93,9 +93,10 @@ const Cart = () => {
     return (
         <Grid>
             <IconButton
+                id="button-open-cart"
                 onClick={() => setIsDrawerOpened(true)}
                 sx={{position: 'fixed', zIndex: 1, top: '70px', right: '20px', backgroundColor: 'darkgrey'}}>
-                <Badge badgeContent={context.length} color="error">
+                <Badge id="cart-content-amount" badgeContent={context.length} color="error">
                     <AddShoppingCart/>
                 </Badge>
             </IconButton>
@@ -113,7 +114,7 @@ const Cart = () => {
                         <Typography sx={{textAlign: 'center', fontSize: '20px'}}>
                             Restaurant:
                         </Typography>
-                        <Typography sx={{
+                        <Typography id="cart-restaurant-name" sx={{
                             textAlign: 'center',
                             textDecoration: 'underline',
                             fontSize: '20px',
@@ -124,31 +125,38 @@ const Cart = () => {
                     </>
                 }
 
-                {context.map(({id, name, amount, previewLink, cost}) => (
+                {context.map(({id, name, amount, previewLink, cost}, index) => (
                     <Grid key={`${name}${id}`} container direction='column' alignItems='center'>
-                        <CardHeader sx={{textAlign: 'center'}} title={name}/>
+                        <CardHeader id={`cart-dish-name${index}`} sx={{textAlign: 'center'}} title={name}/>
                         <CardMedia
                             component="img"
+                            id={`cart-dish-image${index}`}
                             image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
                             alt="Paella dish"
                             sx={{maxHeight: 150, maxWidth: 150}}
                         />
-                        <Typography sx={{margin: '10px 0px'}}>{`Price: ${centsToDollars(cost)}`}</Typography>
+                        <Typography
+                            id={`cart-dish-cost${index}`}
+                            sx={{margin: '10px 0px'}}
+                        >
+                            {`Price: ${centsToDollars(cost)}`}
+                        </Typography>
                         <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Button onClick={() => handleDecreaseDishAmount(id)}>-</Button>
-                            <Button disabled style={{color: 'black'}}>{amount}</Button>
-                            <Button onClick={() => handleIncreaseDishAmount(id)}>+</Button>
+                            <Button id={`cart-button-minus${index}`} onClick={() => handleDecreaseDishAmount(id)}>-</Button>
+                            <Button id={`cart-dish-amount${index}`} disabled style={{color: 'black'}}>{amount}</Button>
+                            <Button id={`cart-button-plus${index}`} onClick={() => handleIncreaseDishAmount(id)}>+</Button>
                         </ButtonGroup>
                         <Divider className={styles.divider}/>
                     </Grid>
                 ))}
                 {!!totalCost &&
                     <>
-                        <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '20px'}}>
+                        <Typography id="cart-total-cost" sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '20px'}}>
                             {`Total: ${centsToDollars(totalCost)}`}
                         </Typography>
                         <Grid container direction='column' alignItems='center' sx={{margin: '30px 0px'}}>
                             <Fab size='small'
+                                 id="cart-button-buy"
                                  variant="extended"
                                  sx={{width: '90%'}}
                                  onClick={handleBuy}

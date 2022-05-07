@@ -24,10 +24,15 @@ const ConfirmationModal: React.FC<Props> = ({modalData, setModalData, deleteDish
             </DialogContentText>
         </DialogContent>
         <DialogActions style={{display: 'flex', justifyContent: 'center'}}>
-            <Button onClick={() => setModalData({isOpened: false, index: 0})}>Cancel</Button>
-            <Button onClick={() => (deleteDish(modalData.index), setModalData({isOpened: false, index: 0}))}>
-                Delete
-            </Button>
+            <Button id="button-delete-cancel" onClick={
+                () => setModalData({isOpened: false, index: 0})
+            }>Cancel</Button>
+            <Button id="button-delete-accept" onClick={
+                () => {
+                    deleteDish(modalData.index);
+                    setModalData({isOpened: false, index: 0});
+                }
+            }>Delete</Button>
         </DialogActions>
     </Dialog>
 );

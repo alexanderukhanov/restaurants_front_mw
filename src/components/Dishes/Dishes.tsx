@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { push } from "connected-react-router";
 import { Fab, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const Dishes: React.FC<Props> = ({restaurantId}) => {
+    const dispatch = useDispatch();
     const [, setContext] = useContext(Context);
     const restaurantsData = useSelector(selectRestaurantsData);
     const dishes = useMemo(() => {
@@ -47,29 +49,34 @@ const Dishes: React.FC<Props> = ({restaurantId}) => {
         });
     };
 
+    useEffect(() => {
+       !restaurantsData.length && dispatch(push('/'));
+    }, [dispatch, restaurantsData]);
+
     return (
         <Grid sx={{padding: 1}}>
-            {dishes.map((dish) => {
+            {dishes.map((dish, index) => {
                 const {id, description, name, cost, previewLink} = dish;
 
                 return (
                     <Card key={`${name}${id}`} sx={{
                         marginBottom: '15px', borderRadius: '20px', boxShadow: '0px 0px 6px 2px rgba(34, 60, 80, 0.25)'
                     }}>
-                        <CardHeader sx={{textAlign: 'center'}} title={name}/>
+                        <CardHeader id={`dish-name${index}`} sx={{textAlign: 'center'}} title={name}/>
                         <CardMedia
                             component="img"
+                            id={`image-dish${index}`}
                             image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
                             alt="Paella dish"
                             sx={{maxHeight: 265}}
                         />
                         <CardContent>
-                            <Typography variant="body2" color="text.secondary" align="center">
+                            <Typography id={`dish-description${index}`}  variant="body2" color="text.secondary" align="center">
                                 {description}
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing sx={{justifyContent: 'right'}}>
-                            <Fab size='small' variant="extended" onClick={() => handleAddDish(dish)}>
+                            <Fab id={`dish-cost${index}`}  size='small' variant="extended" onClick={() => handleAddDish(dish)}>
                                 {`Add ${centsToDollars(cost)}`}
                             </Fab>
                         </CardActions>

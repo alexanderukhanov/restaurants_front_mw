@@ -6,11 +6,13 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Drawer, MenuItem } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
-import useStyles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import useStyles from './styles';
 import { getUserProfileRequest, handleLogout } from '../../redux/modules/users/actions';
 import { selectUserProfile } from '../../redux/modules/users/selectors';
+import { isCookiePresent } from "../../constants";
 
 const Header = () => {
     const classes = useStyles();
@@ -29,7 +31,7 @@ const Header = () => {
     };
 
     useEffect(() => {
-        if (!document.cookie) {
+        if (!isCookiePresent()) {
             return;
         }
 
@@ -57,6 +59,7 @@ const Header = () => {
                     <IconButton
                         edge="start"
                         color="inherit"
+                        id="hamburger-menu"
                         aria-label="menu"
                         className={classes.menuButton}
                         onClick={() => setIsDrawerOpened(true)}
@@ -68,14 +71,14 @@ const Header = () => {
                         open={isDrawerOpened}
                         onClose={handleClose}
                     >
-                        {isAdmin && <MenuItem onClick={dashboardHandler}>Admin Dashboard</MenuItem>}
-                        <MenuItem onClick={aboutSiteHandler}>About Site</MenuItem>
+                        {isAdmin && <MenuItem id="menu-item-dashboard" onClick={dashboardHandler}>Admin Dashboard</MenuItem>}
+                        <MenuItem id="menu-item-about" onClick={aboutSiteHandler}>About Site</MenuItem>
                     </Drawer>
-                    <Typography variant="h6" className={classes.title} onClick={() => history.push('/')}>
+                    <Typography id="header-title" variant="h6" className={classes.title} onClick={() => history.push('/')}>
                         Restaurants
                     </Typography>
-                    {!document.cookie && <Button color="inherit" onClick={() => history.push('/login')}>Login</Button>}
-                    {!!document.cookie && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
+                    {!isCookiePresent() && <Button id="button-login" color="inherit" onClick={() => history.push('/login')}>Login</Button>}
+                    {!!isCookiePresent() && <Button id="button-logout" color="inherit" onClick={logoutHandler}>Logout</Button>}
                 </Toolbar>
             </AppBar>
         </div>

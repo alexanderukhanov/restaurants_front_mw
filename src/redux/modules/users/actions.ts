@@ -21,6 +21,7 @@ export const loginAndGetProfileRequest = (data: UserDataToLogin) => (
         }
 
         dispatch(getUserProfileRequest() as any);
+        dispatch(push('/'));
     }
 );
 
@@ -31,7 +32,6 @@ export const getUserProfileRequest = () => (
         });
 
         userProfile && dispatch(getProfileSuccess(userProfile));
-        dispatch(push('/'));
     }
 );
 

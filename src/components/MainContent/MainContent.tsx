@@ -78,25 +78,26 @@ const MainContent = () => {
                 <Card key={`${name}${id}`} sx={{
                     marginBottom: '15px', borderRadius: '20px', boxShadow: '0px 0px 6px 2px rgba(34, 60, 80, 0.25)'
                 }}>
-                    <CardHeader sx={{textAlign: 'center'}} title={name}/>
+                    <CardHeader id="restaurant-name" sx={{textAlign: 'center'}} title={name}/>
                     <CardMedia
                         component="img"
+                        id="image-restaurant"
                         image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
                         alt="Paella dish"
                     />
                     <CardContent>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography id="restaurant-type" variant="body2" color="text.secondary">
                             {`Kitchen: ${type}`}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{marginTop: 2}}>
+                        <Typography id="restaurant-address" variant="body2" color="text.secondary" sx={{marginTop: 2}}>
                             {`Address: ${address}`}
                         </Typography>
                     </CardContent>
                     <CardActions disableSpacing sx={{justifyContent: 'space-between'}}>
-                        <IconButton aria-label="add to favorites" sx={{fontSize: 22}} onClick={() => handleLike(id)}>
+                        <IconButton id="like-restaurant" aria-label="add to favorites" sx={{fontSize: 22}} onClick={() => handleLike(id)}>
                             <FavoriteIcon sx={{color: likesList.get(id) ? '#020202' : '#d7cfcf'}}/> {likes}
                         </IconButton>
-                        <Fab size='small' variant="extended" onClick={() => dispatch(push(`/restaurant/${id}`))}>
+                        <Fab id="button-choose-dishes" size='small' variant="extended" onClick={() => dispatch(push(`/restaurant/${id}`))}>
                             Choose dishes
                         </Fab>
                     </CardActions>

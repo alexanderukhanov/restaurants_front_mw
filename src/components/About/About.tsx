@@ -8,7 +8,7 @@ const About = () => (
         backgroundSize: 'cover',
         backgroundPosition: 'center'
     }}>
-        <Typography sx={{textAlign: 'center', fontSize: '25px'}}>
+        <Typography id="title-about" sx={{textAlign: 'center', fontSize: '25px'}}>
             About
         </Typography>
         <Grid container justifyContent='center' alignItems='center'

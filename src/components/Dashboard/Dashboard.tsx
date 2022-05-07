@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { push } from "connected-react-router";
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
     Button,
     CardMedia,
@@ -17,12 +17,14 @@ import SendIcon from '@material-ui/icons/Send';
 import Alert from '@mui/material/Alert';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+
 import { AddRestaurant } from '../../redux/modules/restaurants/types';
 import useStyles from './styles';
 import { createRestaurantRequest, createRestaurantSuccess } from '../../redux/modules/restaurants/actions';
 import ConfirmationModal from '../../modals/ConfirmationModal';
 import { selectIsNewRestaurantCreated } from '../../redux/modules/restaurants/selectors';
 import SuccessModal from '../../modals/SuccessModal';
+import { isCookiePresent } from "../../constants";
 
 const initialDishState = {
     cost: '',
@@ -212,13 +214,19 @@ const Dashboard = () => {
                 dishFile.value = '';
             }
         });
+
         setRestaurantData(initialRestaurantState);
         dispatch(createRestaurantSuccess(false));
     };
 
     useEffect(() => {
+        restaurantData.dishes.length !== 1 &&
         formRef.current?.scrollIntoView({behavior: "smooth", block: "end"});
     }, [restaurantData.dishes]);
+
+    useEffect(() => {
+        !isCookiePresent() && dispatch(push('/'));
+    }, [dispatch]);
 
     return (
         <FormControl component='form' innerRef={formRef} style={{width: '100%'}}>
@@ -230,11 +238,12 @@ const Dashboard = () => {
                 spacing={1}
                 style={{width: '100%', padding: '10px 0px'}}
             >
-                <Typography variant="h6">Restaurant</Typography>
+                <Typography id="title-restaurant" variant="h6">Restaurant</Typography>
 
                 <Grid className={classes.fieldsWrapper}>
                     <TextField
                         label="Name"
+                        id="restaurant-name"
                         variant="standard"
                         value={restaurantData.restaurant.name}
                         name='name'
@@ -243,6 +252,7 @@ const Dashboard = () => {
                     />
                     <TextField
                         label="Type"
+                        id="restaurant-type"
                         variant="standard"
                         value={restaurantData.restaurant.type}
                         name='type'
@@ -251,6 +261,7 @@ const Dashboard = () => {
                     />
                     <TextField
                         label="Address"
+                        id="restaurant-address"
                         variant="standard"
                         onChange={restaurantDataHandler}
                         value={restaurantData.restaurant.address}
@@ -272,7 +283,14 @@ const Dashboard = () => {
                     </Button>
                 </label>
                 {isImageToSend.restaurant && isUploadClicked &&
-                    <Alert severity="warning" style={{width: '52%'}}>Please select a file</Alert>}
+                    <Alert
+                        id="file-alert"
+                        severity="warning"
+                        style={{width: '52%'}}
+                    >
+                        Please select a file
+                    </Alert>
+                }
 
                 <CardMedia
                     component="img"
@@ -289,7 +307,7 @@ const Dashboard = () => {
                                 <Typography variant="h6">{`Dish - ${index + 1}`}</Typography>
                                 {open[index] ? <ExpandLess/> : <ExpandMore/>}
                             </Grid>
-                            <Grid item style={{alignSelf: 'center'}}>
+                            <Grid id={`button-delete${index}`} item style={{alignSelf: 'center'}}>
                                 <DeleteOutlineIcon onClick={() => handleDeleteDish(index)}/>
                             </Grid>
                         </Grid>
@@ -298,6 +316,7 @@ const Dashboard = () => {
                             <Grid className={classes.fieldsWrapper}>
                                 <TextField
                                     label="Name"
+                                    id={`dish-name${index}`}
                                     variant="standard"
                                     value={dish.name}
                                     name='name'
@@ -305,6 +324,7 @@ const Dashboard = () => {
                                     onChange={(e) => dishDataHandler(e, index)}/>
                                 <TextField
                                     label="Description"
+                                    id={`dish-description${index}`}
                                     variant="standard"
                                     value={dish.description}
                                     name='description'
@@ -313,6 +333,7 @@ const Dashboard = () => {
                                 />
                                 <TextField
                                     label="Cost"
+                                    id={`dish-cost${index}`}
                                     variant="standard"
                                     type='number'
                                     onInput={handleInputCost}
@@ -346,7 +367,7 @@ const Dashboard = () => {
                                 </Button>
                             </label>
                             {isImageToSend.dishes[index] && isUploadClicked &&
-                                <Alert severity="warning">Please select a file</Alert>}
+                                <Alert id={`file-alert${index}`} severity="warning">Please select a file</Alert>}
 
                             <CardMedia
                                 component="img"
@@ -358,7 +379,7 @@ const Dashboard = () => {
                 ))
                 }
 
-                <Grid className={classes.addDishBlock} onClick={addDishHandler}>
+                <Grid id="button-add-dish" className={classes.addDishBlock} onClick={addDishHandler}>
                     <AddCircleIcon color='action'/>
                     <Typography style={{marginTop: 3}}>
                         Add Dish
@@ -367,6 +388,7 @@ const Dashboard = () => {
 
                 <Button
                     variant="contained"
+                    id="button-upload"
                     endIcon={<SendIcon/>}
                     style={{marginTop: 10}}
                     onClick={handleUpload}

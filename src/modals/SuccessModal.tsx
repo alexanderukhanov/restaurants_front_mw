@@ -24,7 +24,7 @@ const SuccessModal: React.FC<Props> = ({isNewEntityCreated, successModalCloseHan
             </DialogContentText>
         </DialogContent>
         <DialogActions style={{display: 'flex', justifyContent: 'center'}}>
-            <Button onClick={successModalCloseHandler}>Ok</Button>
+            <Button id="button-ok" onClick={successModalCloseHandler}>Ok</Button>
         </DialogActions>
     </Dialog>
 );

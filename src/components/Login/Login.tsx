@@ -81,6 +81,7 @@ const Login = () => {
             <Grid item>
                 <Button
                     variant="contained"
+                    id="login-register-button"
                     color='primary'
                     disabled={Boolean(errors.email || errors.password)}
                     onClick={handleLogin}
