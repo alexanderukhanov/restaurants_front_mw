@@ -35,10 +35,10 @@ jobs:
   up_frontend:
     runs-on: ubuntu-20.04
     steps:
-      - name: wait up_frontend
+      - name: wait up_backend
         uses: nev7n/wait_for_response@v1
         with:
-          url: 'http://localhost:3001/'
+          url: http://localhost:3001/
           responseCode: 404
           timeout: 60000
           
@@ -65,7 +65,7 @@ jobs:
       - name: wait up_frontend
         uses: nev7n/wait_for_response@v1
         with:
-          url: 'http://localhost:3000/'
+          url: http://localhost:3000/
           responseCode: 200
           timeout: 60000
       
