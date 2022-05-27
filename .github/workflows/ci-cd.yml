@@ -19,6 +19,8 @@ jobs:
       
   setup_services:  
       runs-on: ubuntu-20.04
+      steps:
+          - run: docker images
       
       services:
         mysql:
