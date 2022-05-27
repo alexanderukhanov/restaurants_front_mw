@@ -48,12 +48,15 @@ jobs:
         with:
           node-version: 16.15.0
           
-      - name: start
+      - name: da
         run: |
-          sleep 120
           echo outputs: ${{ steps.up_backend.outputs }}
           echo conclusion: ${{ steps.up_backend.conclusion }}
           echo outcome: ${{ steps.up_backend.outcome }}
+          
+      - name: start
+        run: |
+          sleep 120
           yarn install
           yarn start
           
@@ -85,6 +88,7 @@ jobs:
             echo outputs: ${{ steps.up_backend.outputs }}
             echo conclusion: ${{ steps.up_backend.conclusion }}
             echo outcome: ${{ steps.up_backend.outcome }}
+            yarn install
             yarn test
 
         - name: push
