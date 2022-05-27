@@ -45,6 +45,7 @@ jobs:
           run: |
             yarn install 
             yarn start &
+            sleep 200
             yarn test
 
         - name: push
