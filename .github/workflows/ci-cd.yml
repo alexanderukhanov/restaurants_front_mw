@@ -35,12 +35,12 @@ jobs:
   up_frontend:
     runs-on: ubuntu-20.04
     steps:
-      - name: wait up_backend
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: http://localhost:3001/
-          responseCode: 404
-          timeout: 60000
+#       - name: wait up_backend
+#         uses: nev7n/wait_for_response@v1
+#         with:
+#           url: http://localhost:3001/
+#           responseCode: 404
+#           timeout: 60000
           
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -62,12 +62,12 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
     steps:
-      - name: wait up_frontend
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: http://localhost:3000/
-          responseCode: 200
-          timeout: 60000
+#       - name: wait up_frontend
+#         uses: nev7n/wait_for_response@v1
+#         with:
+#           url: http://localhost:3000/
+#           responseCode: 200
+#           timeout: 60000
       
       - name: test
         run: yarn test
