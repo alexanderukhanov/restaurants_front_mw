@@ -16,33 +16,31 @@ jobs:
           node-version: 16.15.0
       - name: build image
         run: docker build -t front .
-      - name: da
-        run: docker volume ls
       
   setup_services:
       needs: up_frontend
       runs-on: ubuntu-20.04
       steps:
-          - run: docker volume ls
+          - run: docker images
       
-#       services:
-#         mysql:
-#           image: mysql:5.7
-#           env:
-#             MYSQL_ROOT_PASSWORD: 12345
-#             MYSQL_DATABASE: restaurants
-#           ports:
-#           - 3307:3306
+      services:
+        mysql:
+          image: mysql:5.7
+          env:
+            MYSQL_ROOT_PASSWORD: 12345
+            MYSQL_DATABASE: restaurants
+          ports:
+          - 3307:3306
         
-#         back: 
-#           image: alexanderukhanov/back
-#           ports:
-#               - 3001:3001
+        back: 
+          image: alexanderukhanov/back
+          ports:
+              - 3001:3001
               
-#         front: 
-#           image: front
-#           ports:
-#               - 3000:3000
+        front: 
+          image: front
+          ports:
+              - 3000:3000
           
   test_push_deploy:
     runs-on: ubuntu-20.04
