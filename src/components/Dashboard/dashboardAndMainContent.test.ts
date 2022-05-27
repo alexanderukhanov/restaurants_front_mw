@@ -24,7 +24,7 @@ describe('dashboard', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,
@@ -168,7 +168,7 @@ describe('mainContent', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,

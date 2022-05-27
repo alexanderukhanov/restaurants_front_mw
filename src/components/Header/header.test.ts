@@ -7,7 +7,7 @@ describe('header', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,
