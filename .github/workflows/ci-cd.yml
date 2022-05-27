@@ -47,6 +47,9 @@ jobs:
         with:
           node-version: 16.15.0
           
+      - name: da
+        run: echo steps.up_backend.outcome
+          
       - name: start
         run: |
           yarn install
@@ -70,7 +73,10 @@ jobs:
 #           timeout: 60000
       
       - name: test
-        run: yarn test
+        run: |
+          sleep 120
+          run: echo steps.up_backend.outcome
+          yarn test
       
       - name: push
         run: |
