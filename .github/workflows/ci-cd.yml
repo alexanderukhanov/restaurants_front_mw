@@ -16,6 +16,8 @@ jobs:
           node-version: 16.15.0
       - name: build image
         run: docker build -t front .
+      - name: da
+        run: docker images
       
   setup_services:
       needs: up_frontend
