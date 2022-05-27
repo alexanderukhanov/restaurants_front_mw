@@ -17,21 +17,11 @@ jobs:
             MYSQL_DATABASE: restaurants
           ports:
           - 3307:3306
-
-      steps:
-        - uses: actions/checkout@v3
-          with: 
-            repository: alexanderukhanov/restaurants_back_mw
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 16.15.0
-
-        - name: start
-          id: up_backend
-          run: |
-            npm ci
-            npx sequelize-cli db:migrate
-            npm run start:dev
+        
+        back: 
+          image: alexanderukhanov/back
+          ports:
+              - 3001:3001
             
   up_frontend:
     runs-on: ubuntu-20.04
@@ -48,15 +38,8 @@ jobs:
         with:
           node-version: 16.15.0
           
-      - name: da
-        run: |
-          echo outputs: ${{ steps.up_backend.outputs }}
-          echo conclusion: ${{ steps.up_backend.conclusion }}
-          echo outcome: ${{ steps.up_backend.outcome }}
-          
       - name: start
         run: |
-          sleep 120
           yarn install
           yarn start
           
@@ -84,10 +67,7 @@ jobs:
       
         - name: test
           run: |
-            sleep 400
-            echo outputs: ${{ steps.up_backend.outputs }}
-            echo conclusion: ${{ steps.up_backend.conclusion }}
-            echo outcome: ${{ steps.up_backend.outcome }}
+            sleep 300
             yarn install
             yarn test
 
