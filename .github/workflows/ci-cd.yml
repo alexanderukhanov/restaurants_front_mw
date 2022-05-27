@@ -8,8 +8,16 @@ on:
 
 jobs:
   up_frontend:
-      runs-on: ubuntu-20.04
-      services:
+    runs-on: ubuntu-20.04
+    steps:          
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.0
+      - name: build image
+        run: docker build -t front .
+      
+    services:
         mysql:
           image: mysql:5.7
           env:
@@ -22,25 +30,11 @@ jobs:
           image: alexanderukhanov/back
           ports:
               - 3001:3001
-            
-
-      steps:
-#       - name: wait up_backend
-#         uses: nev7n/wait_for_response@v1
-#         with:
-#           url: http://localhost:3001/
-#           responseCode: 404
-#           timeout: 60000
-          
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.0
-          
-      - name: start
-        run: |
-          yarn install
-          yarn start
+              
+        front: 
+          image: front
+          ports:
+              - 3000:3000
           
   test_push_deploy:
     runs-on: ubuntu-20.04
@@ -56,17 +50,9 @@ jobs:
         - uses: actions/setup-node@v3
           with:
             node-version: 16.15.0
-            
-#       - name: wait up_frontend
-#         uses: nev7n/wait_for_response@v1
-#         with:
-#           url: http://localhost:3000/
-#           responseCode: 200
-#           timeout: 60000
       
         - name: test
           run: |
-            sleep 300
             yarn install
             yarn test
 
