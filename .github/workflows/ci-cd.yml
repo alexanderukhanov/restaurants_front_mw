@@ -32,6 +32,21 @@ jobs:
             npx sequelize-cli db:migrate
             npm run start:dev
             
+  up_frontend:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+           wait-on: http://localhost:3002
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.0
+          
+      - name: start
+        run: |
+          yarn install
+          yarn start
+          
   test_push_deploy:
     runs-on: ubuntu-20.04
     env:
@@ -41,20 +56,7 @@ jobs:
       SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
-    steps:
-      - uses: actions/checkout@v3
-        with:
-           wait-on: http://localhost:3001
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.0
-          
-      - name: start
-        run: |
-          yarn install
-          yarn start
-          yarn test
-          
+    steps:        
       - name: test
         run: yarn test
       
