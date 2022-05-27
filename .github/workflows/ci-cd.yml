@@ -74,8 +74,10 @@ jobs:
       
       - name: test
         run: |
-          sleep 120
-          run: echo steps.up_backend.outcome
+          sleep 400
+          echo outputs: ${{ steps.up_backend.outputs }}
+          echo conclusion: ${{ steps.up_backend.conclusion }}
+          echo outcome: ${{ steps.up_backend.outcome }}
           yarn test
       
       - name: push
