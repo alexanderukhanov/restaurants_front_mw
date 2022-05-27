@@ -1,0 +1,106 @@
+name: ci-cd
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  up_backend: 
+      runs-on: ubuntu-20.04
+      services:
+        mysql:
+          image: mysql:5.7
+          env:
+            MYSQL_ROOT_PASSWORD: 12345
+            MYSQL_DATABASE: restaurants
+          ports:
+          - 3307:3306
+
+      steps:
+        - uses: actions/checkout@v3
+          with: 
+            repository: alexanderukhanov/restaurants_back_mw
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16.15.0
+
+        - name: start
+          id: up_backend
+          run: |
+            npm ci
+            npx sequelize-cli db:migrate
+            npm run start:dev
+            
+  up_frontend:
+    runs-on: ubuntu-20.04
+    steps:
+#       - name: wait up_backend
+#         uses: nev7n/wait_for_response@v1
+#         with:
+#           url: http://localhost:3001/
+#           responseCode: 404
+#           timeout: 60000
+          
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.0
+          
+      - name: da
+        run: |
+          echo outputs: ${{ steps.up_backend.outputs }}
+          echo conclusion: ${{ steps.up_backend.conclusion }}
+          echo outcome: ${{ steps.up_backend.outcome }}
+          
+      - name: start
+        run: |
+          sleep 120
+          yarn install
+          yarn start
+          
+  test_push_deploy:
+    runs-on: ubuntu-20.04
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16.15.0
+            
+#       - name: wait up_frontend
+#         uses: nev7n/wait_for_response@v1
+#         with:
+#           url: http://localhost:3000/
+#           responseCode: 200
+#           timeout: 60000
+      
+        - name: test
+          run: |
+            sleep 400
+            echo outputs: ${{ steps.up_backend.outputs }}
+            echo conclusion: ${{ steps.up_backend.conclusion }}
+            echo outcome: ${{ steps.up_backend.outcome }}
+            yarn install
+            yarn test
+
+        - name: push
+          run: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t alexanderukhanov/front .
+            docker push alexanderukhanov/front
+
+        - name: deploy
+          uses: appleboy/ssh-action@master
+          with:
+            host: $SSH_HOST
+            username: $SSH_USERNAME
+            key: $SSH_KEY
+            script: touch success_front.txt
