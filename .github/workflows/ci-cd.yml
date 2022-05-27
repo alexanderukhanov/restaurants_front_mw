@@ -17,13 +17,13 @@ jobs:
       - name: build image
         run: docker build -t front .
       - name: da
-        run: docker images
+        run: docker volume ls
       
   setup_services:
       needs: up_frontend
       runs-on: ubuntu-20.04
       steps:
-          - run: docker images
+          - run: docker volume ls
       
 #       services:
 #         mysql:
