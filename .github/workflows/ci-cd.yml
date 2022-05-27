@@ -7,21 +7,10 @@ on:
     branches: [ master ]
 
 jobs:
-  up_frontend:
-    runs-on: ubuntu-20.04
-    steps:          
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.0
-      - name: build image
-        run: docker build -t front .
-      
   setup_services:
-      needs: up_frontend
       runs-on: ubuntu-20.04
       steps:
-          - run: docker images
+          - run: echo setup_services
       
       services:
         mysql:
@@ -35,13 +24,8 @@ jobs:
         back: 
           image: alexanderukhanov/back
           ports:
-              - 3001:3001
+          - 3001:3001
               
-        front: 
-          image: front
-          ports:
-              - 3000:3000
-          
   test_push_deploy:
     runs-on: ubuntu-20.04
     env:
@@ -59,7 +43,8 @@ jobs:
       
         - name: test
           run: |
-            yarn install
+            yarn install 
+            yarn start &
             yarn test
 
         - name: push
