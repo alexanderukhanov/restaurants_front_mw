@@ -27,6 +27,7 @@ jobs:
             node-version: 16.15.0
 
         - name: start
+          id: up_backend
           run: |
             npm ci
             npx sequelize-cli db:migrate
@@ -47,11 +48,12 @@ jobs:
         with:
           node-version: 16.15.0
           
-      - name: da
-        run: echo steps.up_backend.outcome
-          
       - name: start
         run: |
+          sleep 120
+          echo outputs: ${{ steps.up_backend.outputs }}
+          echo conclusion: ${{ steps.up_backend.conclusion }}
+          echo outcome: ${{ steps.up_backend.outcome }}
           yarn install
           yarn start
           
@@ -65,6 +67,11 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
     steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16.15.0
+            
 #       - name: wait up_frontend
 #         uses: nev7n/wait_for_response@v1
 #         with:
@@ -72,24 +79,24 @@ jobs:
 #           responseCode: 200
 #           timeout: 60000
       
-      - name: test
-        run: |
-          sleep 400
-          echo outputs: ${{ steps.up_backend.outputs }}
-          echo conclusion: ${{ steps.up_backend.conclusion }}
-          echo outcome: ${{ steps.up_backend.outcome }}
-          yarn test
-      
-      - name: push
-        run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t alexanderukhanov/front .
-          docker push alexanderukhanov/front
-          
-      - name: deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: $SSH_HOST
-          username: $SSH_USERNAME
-          key: $SSH_KEY
-          script: touch success_front.txt
+        - name: test
+          run: |
+            sleep 400
+            echo outputs: ${{ steps.up_backend.outputs }}
+            echo conclusion: ${{ steps.up_backend.conclusion }}
+            echo outcome: ${{ steps.up_backend.outcome }}
+            yarn test
+
+        - name: push
+          run: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t alexanderukhanov/front .
+            docker push alexanderukhanov/front
+
+        - name: deploy
+          uses: appleboy/ssh-action@master
+          with:
+            host: $SSH_HOST
+            username: $SSH_USERNAME
+            key: $SSH_KEY
+            script: touch success_front.txt
