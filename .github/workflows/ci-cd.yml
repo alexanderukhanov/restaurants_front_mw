@@ -35,9 +35,12 @@ jobs:
   up_frontend:
     runs-on: ubuntu-20.04
     steps:
-      - name: wait up_backend
+      - name: wait up_frontend
+        uses: nev7n/wait_for_response@v1
         with:
-          wait-on: http://localhost:3001
+          url: 'http://localhost:3001/'
+          responseCode: 200
+          timeout: 60000
           
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -60,8 +63,11 @@ jobs:
 
     steps:
       - name: wait up_frontend
+        uses: nev7n/wait_for_response@v1
         with:
-          wait-on: http://localhost:3000
+          url: 'http://localhost:3000/'
+          responseCode: 200
+          timeout: 60000
       
       - name: test
         run: yarn test
