@@ -36,7 +36,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: wait up_backend
-        uses: ./
         with:
           wait-on: http://localhost:3001
           
@@ -61,7 +60,6 @@ jobs:
 
     steps:
       - name: wait up_frontend
-        uses: ./
         with:
           wait-on: http://localhost:3000
       
