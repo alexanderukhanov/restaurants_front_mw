@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  up_backend: 
+  up_frontend:
       runs-on: ubuntu-20.04
       services:
         mysql:
@@ -23,9 +23,8 @@ jobs:
           ports:
               - 3001:3001
             
-  up_frontend:
-    runs-on: ubuntu-20.04
-    steps:
+
+      steps:
 #       - name: wait up_backend
 #         uses: nev7n/wait_for_response@v1
 #         with:
