@@ -35,6 +35,14 @@ jobs:
         - uses: actions/setup-node@v3
           with:
             node-version: 16.15.0
+            
+        - name: curl result
+          run: curl --fail HEAD  http://localhost:3001
+          
+        - name: docker services
+          run: |
+            docker service list
+            docker ps -a
       
         - name: test
           run: |
