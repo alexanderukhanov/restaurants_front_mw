@@ -41,8 +41,9 @@ jobs:
           
         - name: docker services
           run: |
-            docker service list
-            docker ps -a
+            sudo docker ps -a
+            sudo docker service list
+            
       
         - name: test
           run: |
