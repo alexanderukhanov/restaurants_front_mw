@@ -6,60 +6,7 @@ on:
   pull_request:
     branches: [ master ]
 
-jobs:
-  up_backend: 
-      runs-on: ubuntu-20.04
-      services:
-        mysql:
-          image: mysql:5.7
-          env:
-            MYSQL_ROOT_PASSWORD: 12345
-            MYSQL_DATABASE: restaurants
-          ports:
-          - 3307:3306
-
-      steps:
-        - uses: actions/checkout@v3
-          with: 
-            repository: alexanderukhanov/restaurants_back_mw
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 16.15.0
-
-        - name: start
-          id: up_backend
-          run: |
-            npm ci
-            npx sequelize-cli db:migrate
-            npm run start:dev
-            
-  up_frontend:
-    runs-on: ubuntu-20.04
-    steps:
-#       - name: wait up_backend
-#         uses: nev7n/wait_for_response@v1
-#         with:
-#           url: http://localhost:3001/
-#           responseCode: 404
-#           timeout: 60000
-          
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.0
-          
-      - name: da
-        run: |
-          echo outputs: ${{ steps.up_backend.outputs }}
-          echo conclusion: ${{ steps.up_backend.conclusion }}
-          echo outcome: ${{ steps.up_backend.outcome }}
-          
-      - name: start
-        run: |
-          sleep 120
-          yarn install
-          yarn start
-          
+jobs:            
   test_push_deploy:
     runs-on: ubuntu-20.04
     env:
@@ -69,26 +16,46 @@ jobs:
       SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
+    services:
+          db:
+            image: mysql:5.7
+            env:
+              MYSQL_ROOT_PASSWORD: 12345
+              MYSQL_DATABASE: restaurants
+            ports:
+            - 3307:3306
+
+          back: 
+            image: alexanderukhanov/back
+            ports:
+            - 3001:3001
+            options: >-
+              --name back
+
     steps:
         - uses: actions/checkout@v3
         - uses: actions/setup-node@v3
           with:
             node-version: 16.15.0
-            
-#       - name: wait up_frontend
-#         uses: nev7n/wait_for_response@v1
-#         with:
-#           url: http://localhost:3000/
-#           responseCode: 200
-#           timeout: 60000
+                    
+        - name: docker services
+          run: |
+            sleep 35
+            sudo docker ps -a
+            sudo docker logs back
+            curl HEAD  http://localhost:3001
       
         - name: test
           run: |
-            sleep 400
-            echo outputs: ${{ steps.up_backend.outputs }}
-            echo conclusion: ${{ steps.up_backend.conclusion }}
-            echo outcome: ${{ steps.up_backend.outcome }}
-            yarn install
+            yarn install 
+            yarn start &
+            sleep 200
+            sudo docker ps -a
+            sudo docker logs back
+            echo test back
+            curl HEAD  http://localhost:3001
+            echo test front
+            curl -I HEAD  http://localhost:3000
             yarn test
 
         - name: push
