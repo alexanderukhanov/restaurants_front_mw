@@ -24,11 +24,7 @@ describe('dashboard', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: true,
-            defaultViewport: {
-                width: WIDTH,
-                height: HEIGHT,
-            }
+            headless: true
         });
         page = await browser.newPage();
 
@@ -168,11 +164,7 @@ describe('mainContent', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: true,
-            defaultViewport: {
-                width: WIDTH,
-                height: HEIGHT,
-            }
+            headless: true
         });
         page = await browser.newPage();
         await page.goto(OWN_ADDRESS);
