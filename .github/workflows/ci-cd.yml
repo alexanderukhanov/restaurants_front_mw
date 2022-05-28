@@ -36,8 +36,8 @@ jobs:
           with:
             node-version: 16.15.0
             
-        - name: curl result
-          run: curl --fail HEAD  http://localhost:3001
+#         - name: curl result
+#           run: curl --fail HEAD  http://localhost:3001
           
         - name: docker services
           run: |
