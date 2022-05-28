@@ -17,7 +17,7 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
     services:
-          mysql:
+          db:
             image: mysql:5.7
             env:
               MYSQL_ROOT_PASSWORD: 12345
