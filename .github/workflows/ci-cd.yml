@@ -41,9 +41,9 @@ jobs:
           
         - name: docker services
           run: |
+            sleep 30
             sudo docker ps -a
-            sudo docker service list
-            
+            curl HEAD  http://localhost:3001
       
         - name: test
           run: |
