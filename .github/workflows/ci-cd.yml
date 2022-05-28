@@ -30,7 +30,7 @@ jobs:
             ports:
             - 3001:3001
             options: >-
-              --health-timeout 60s
+              --name back
 
     steps:
         - uses: actions/checkout@v3
