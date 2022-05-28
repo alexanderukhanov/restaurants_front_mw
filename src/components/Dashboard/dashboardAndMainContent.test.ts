@@ -7,7 +7,7 @@ import {
     TEST_ADMIN,
     TEST_ADMIN_PASS,
 } from "../../constants";
-
+jest.setTimeout(120000);
 const TEST_RESTAURANT_TYPE = 'type';
 const TEST_RESTAURANT_NAME = 'name';
 const TEST_RESTAURANT_ADDRESS = 'address';
