@@ -377,7 +377,8 @@ describe('mainContent', () => {
                 .replace(/\D/g, '')) / 100
         ).toBe(Number('16.3'));
 
-        await page.click('#cart-button-buy');
+        const cartButtonBuyFirst = await page.$('#cart-button-buy');
+        await cartButtonBuyFirst?.evaluate(e => (e as HTMLInputElement).click());
 
         expect(page.url()).toEqual(OWN_ADDRESS + '/login');
 
