@@ -40,8 +40,6 @@ jobs:
                     
         - name: docker services
           run: |
-            sleep 65
-            sudo docker ps -a
             sudo docker logs back
             curl HEAD  http://localhost:3001
       
