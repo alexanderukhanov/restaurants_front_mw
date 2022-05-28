@@ -41,14 +41,21 @@ jobs:
         - name: docker services
           run: |
             sleep 35
+            sudo docker ps -a
             sudo docker logs back
-            curl HEAD  http://localhost:3001
+            curl --fail HEAD  http://localhost:3001
       
         - name: test
           run: |
             yarn install 
             yarn start &
             sleep 200
+            sudo docker ps -a
+            sudo docker logs back
+            echo test back
+            curl --fail HEAD  http://localhost:3001
+            echo test front
+            curl -I HEAD  http://localhost:3000
             yarn test
 
         - name: push
