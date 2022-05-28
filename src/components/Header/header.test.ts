@@ -8,10 +8,10 @@ describe('header', () => {
     beforeEach(async () => {
         browser = await puppeteer.launch({
             headless: true,
-            args: [
-                `--no-sandbox`,
-                `--disable-setuid-sandbox`
-            ]
+            defaultViewport: {
+                width: WIDTH,
+                height: HEIGHT,
+            }
         });
         page = await browser.newPage();
         await page.goto(OWN_ADDRESS);

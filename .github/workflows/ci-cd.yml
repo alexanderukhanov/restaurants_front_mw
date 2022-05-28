@@ -17,7 +17,7 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
 
     services:
-          db:
+          mysql:
             image: mysql:5.7
             env:
               MYSQL_ROOT_PASSWORD: 12345
@@ -37,25 +37,11 @@ jobs:
         - uses: actions/setup-node@v3
           with:
             node-version: 16.15.0
-                    
-        - name: docker services
-          run: |
-            sleep 35
-            sudo docker ps -a
-            sudo docker logs back
-            curl HEAD  http://localhost:3001
-      
-        - name: test
-          run: |
+
+        -  name: test
+           run: |
             yarn install 
             yarn start &
-            sleep 200
-            sudo docker ps -a
-            sudo docker logs back
-            echo test back
-            curl HEAD  http://localhost:3001
-            echo test front
-            curl -I HEAD  http://localhost:3000
             yarn test
 
         - name: push

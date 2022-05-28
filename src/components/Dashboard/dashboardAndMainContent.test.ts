@@ -7,7 +7,7 @@ import {
     TEST_ADMIN,
     TEST_ADMIN_PASS,
 } from "../../constants";
-jest.setTimeout(120000);
+
 const TEST_RESTAURANT_TYPE = 'type';
 const TEST_RESTAURANT_NAME = 'name';
 const TEST_RESTAURANT_ADDRESS = 'address';
@@ -25,10 +25,10 @@ describe('dashboard', () => {
     beforeEach(async () => {
         browser = await puppeteer.launch({
             headless: true,
-            args: [
-                `--no-sandbox`,
-                `--disable-setuid-sandbox`
-            ]
+            defaultViewport: {
+                width: WIDTH,
+                height: HEIGHT,
+            }
         });
         page = await browser.newPage();
 
@@ -169,10 +169,10 @@ describe('mainContent', () => {
     beforeEach(async () => {
         browser = await puppeteer.launch({
             headless: true,
-            args: [
-                `--no-sandbox`,
-                `--disable-setuid-sandbox`
-            ]
+            defaultViewport: {
+                width: WIDTH,
+                height: HEIGHT,
+            }
         });
         page = await browser.newPage();
         await page.goto(OWN_ADDRESS);
