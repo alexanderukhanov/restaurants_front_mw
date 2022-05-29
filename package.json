@@ -7,7 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false --testTimeout=30000",
     "eject": "react-scripts eject",
-    "serve": "serve -s build"
+    "serve": "serve -s build",
+    "startAndTest": "yarn start & chmod +x ./ping.sh && ./ping.sh && yarn test"
   },
   "devDependencies": {
     "puppeteer": "^13.7.0"
