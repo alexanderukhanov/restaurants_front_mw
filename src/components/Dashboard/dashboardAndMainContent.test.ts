@@ -28,7 +28,7 @@ describe('dashboard', () => {
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,
-            }
+            },
         });
         page = await browser.newPage();
 
