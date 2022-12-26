@@ -24,12 +24,11 @@ describe('dashboard', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,
-            },
-            slowMo: 55
+            }
         });
         page = await browser.newPage();
 
