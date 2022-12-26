@@ -16,7 +16,7 @@ const TEST_DISH0_DESCRIPTION = 'description0';
 const TEST_DISH0_COST = '5.35';
 const TEST_DISH1_NAME = 'name1';
 const TEST_DISH1_DESCRIPTION = 'description1';
-const TEST_DISH1_COST = '0.15';
+const TEST_DISH1_COST = '0.25';
 
 describe('dashboard', () => {
     let browser: Browser;
@@ -24,11 +24,12 @@ describe('dashboard', () => {
 
     beforeEach(async () => {
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             defaultViewport: {
                 width: WIDTH,
                 height: HEIGHT,
             },
+            slowMo: 55
         });
         page = await browser.newPage();
 
@@ -342,7 +343,7 @@ describe('mainContent', () => {
 
         expect(
             cartTotalCost && Number(cartTotalCost.replace(/\D/g, '')) / 100
-        ).toBe(Number('0.25'));
+        ).toBe(Number(TEST_DISH1_COST));
         
         await page.mouse.click(1, 1);
         await page.waitForSelector('#dish-cost0');
