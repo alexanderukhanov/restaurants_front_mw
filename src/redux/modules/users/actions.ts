@@ -20,7 +20,10 @@ export const loginAndGetProfileRequest = (data: UserDataToLogin) => (
             return;
         }
 
-        document.cookie = `ExpressGeneratorTs=123; expires=${new Date(new Date().getTime() + 259200 * 1000).toUTCString()}; path=/; secure; SameSite=None`;
+        if (!document.cookie.match('ExpressGeneratorTs')) {
+            document.cookie = `ExpressGeneratorTs=123; expires=${new Date(new Date().getTime() + 259200 * 1000).toUTCString()}; path=/; secure; SameSite=None`;
+        }
+
         dispatch(getUserProfileRequest() as any);
         dispatch(push('/'));
     }
