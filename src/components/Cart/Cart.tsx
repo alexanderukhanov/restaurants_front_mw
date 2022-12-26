@@ -131,7 +131,10 @@ const Cart = () => {
                         <CardMedia
                             component="img"
                             id={`cart-dish-image${index}`}
-                            image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
+                            image={`${previewLink.match('https://') 
+                                ? previewLink 
+                                : process.env.REACT_APP_BACKEND_URL + '/images/' + previewLink}`
+                            }
                             alt="Paella dish"
                             sx={{maxHeight: 150, maxWidth: 150}}
                         />

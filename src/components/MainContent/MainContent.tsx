@@ -82,7 +82,10 @@ const MainContent = () => {
                     <CardMedia
                         component="img"
                         id="image-restaurant"
-                        image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
+                        image={`${previewLink.match('https://')
+                            ? previewLink
+                            : process.env.REACT_APP_BACKEND_URL + '/images/' + previewLink}`
+                        }
                         alt="Paella dish"
                     />
                     <CardContent>
@@ -97,7 +100,7 @@ const MainContent = () => {
                         <IconButton id="like-restaurant" aria-label="add to favorites" sx={{fontSize: 22}} onClick={() => handleLike(id)}>
                             <FavoriteIcon sx={{color: likesList.get(id) ? '#020202' : '#d7cfcf'}}/> {likes}
                         </IconButton>
-                        <Fab id="button-choose-dishes" size='small' variant="extended" onClick={() => dispatch(push(`/restaurant/${id}`))}>
+                        <Fab id="button-choose-dishes" size='small' variant="extended" style={{zIndex: 'auto'}} onClick={() => dispatch(push(`/restaurant/${id}`))}>
                             Choose dishes
                         </Fab>
                     </CardActions>

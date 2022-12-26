@@ -20,6 +20,7 @@ export const loginAndGetProfileRequest = (data: UserDataToLogin) => (
             return;
         }
 
+        document.cookie = `ExpressGeneratorTs=123; expires=${new Date(new Date().getTime() + 259200 * 1000).toUTCString()}; path=/; secure; SameSite=None`;
         dispatch(getUserProfileRequest() as any);
         dispatch(push('/'));
     }
@@ -50,9 +51,10 @@ export const clearUsersErrors = () => ({
     type: CLEAR_USERS_ERRORS,
 }) as const;
 
-export const handleLogout = () => (
-    UsersService.logout()
-);
+export const handleLogout = () => {
+    document.cookie = `ExpressGeneratorTs=123; expires=${new Date(new Date().getTime() -1).toUTCString()}; path=/; secure; SameSite=None`;
+    return  UsersService.logout();
+};
 
 export type UserStateActionsTypes = ReturnType<typeof getProfileSuccess>
     | ReturnType<typeof usersErrors>

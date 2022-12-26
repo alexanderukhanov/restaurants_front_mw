@@ -66,7 +66,10 @@ const Dishes: React.FC<Props> = ({restaurantId}) => {
                         <CardMedia
                             component="img"
                             id={`image-dish${index}`}
-                            image={`${process.env.REACT_APP_BACKEND_URL}/images/${previewLink}`}
+                            image={`${previewLink.match('https://')
+                                ? previewLink
+                                : process.env.REACT_APP_BACKEND_URL + '/images/' + previewLink}`
+                            }
                             alt="Paella dish"
                             sx={{maxHeight: 265}}
                         />
@@ -76,7 +79,7 @@ const Dishes: React.FC<Props> = ({restaurantId}) => {
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing sx={{justifyContent: 'right'}}>
-                            <Fab id={`dish-cost${index}`}  size='small' variant="extended" onClick={() => handleAddDish(dish)}>
+                            <Fab id={`dish-cost${index}`}  size='small' variant="extended" style={{zIndex: 'auto'}}  onClick={() => handleAddDish(dish)}>
                                 {`Add ${centsToDollars(cost)}`}
                             </Fab>
                         </CardActions>
