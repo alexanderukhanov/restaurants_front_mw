@@ -16,7 +16,7 @@ const TEST_DISH0_DESCRIPTION = 'description0';
 const TEST_DISH0_COST = '5.35';
 const TEST_DISH1_NAME = 'name1';
 const TEST_DISH1_DESCRIPTION = 'description1';
-const TEST_DISH1_COST = '0.25';
+const TEST_DISH1_COST = '0.15';
 
 describe('dashboard', () => {
     let browser: Browser;
