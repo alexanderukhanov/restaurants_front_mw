@@ -83,6 +83,7 @@ describe('dashboard', () => {
         await page.click('#button-add-dish');
         await page.click('#button-add-dish');
 
+        await page.waitForSelector('#button-delete1');
         await page.click('#button-delete1');
         await page.waitForSelector('#button-delete-accept');
         await page.click('#button-delete-accept');
