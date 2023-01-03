@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
-import { getUserProfileRequest, handleLogout } from '../../redux/modules/users/actions';
+import UsersService from "../../services/UsersService";
+import { getUserProfileRequest } from '../../redux/modules/users/actions';
 import { selectUserProfile } from '../../redux/modules/users/selectors';
 import { isCookiePresent } from "../../constants";
 
@@ -25,8 +26,9 @@ const Header = () => {
         setIsDrawerOpened(false);
     };
 
-    const logoutHandler = () => {
-        dispatch(handleLogout);
+    const logoutHandler = async () => {
+        await UsersService.logout();
+        document.cookie = `ExpressGeneratorTs=123; expires=${new Date(new Date().getTime() -1).toUTCString()}; path=/; secure; SameSite=None`;
         history.go(0);
     };
 
